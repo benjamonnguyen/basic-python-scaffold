@@ -1,7 +1,6 @@
 import logging
 import signal
 import sys
-import time
 import os
 
 import nextcord
