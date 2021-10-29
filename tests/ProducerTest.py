@@ -1,9 +1,8 @@
 import unittest
 import logging
 
-from src.utils.logger import app_logger
+from commons.utils.logger import app_logger
 from src.messaging import producer
-from src.enums.event_enums import ProducerEvent
 
 
 class ProducerTest(unittest.TestCase):

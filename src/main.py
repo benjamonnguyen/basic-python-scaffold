@@ -8,7 +8,7 @@ from nextcord.ext import commands
 import uvloop
 
 import config
-from utils.logger import app_logger
+from commons.utils.logger import app_logger
 
 
 def main():

@@ -1,7 +1,7 @@
 import unittest
 import logging
 
-from src.utils.logger import app_logger
+from commons.utils.logger import app_logger
 
 
 class MyTestCase(unittest.TestCase):

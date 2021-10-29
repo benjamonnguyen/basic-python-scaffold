@@ -1,4 +1,4 @@
-from .Message import Message
+from commons.Message import Message
 from src.models.IntervalSettings import IntervalSettings
 
 
