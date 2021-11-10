@@ -40,5 +40,5 @@ def max_interval_settings_value() -> int:
     return config['PARAMETER']['MAX_INTERVAL_SETTINGS_VALUE']
 
 
-def mq_url() -> str:
-    return config['RABBIT_MQ']['URL']
+def rest_api_base_url() -> str:
+    return config['REST_API']['BASE_URL']
