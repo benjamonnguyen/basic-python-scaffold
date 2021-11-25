@@ -1,6 +1,6 @@
 from typing import Dict, Optional
 
-from models.Timer import Timer
+from models import Timer
 from utils.logger import app_logger
 
 

@@ -13,7 +13,7 @@ class Timer:
 
     def update_remaining(self):
         self._remaining = self._end - time()
-
+    
     def update_end(self):
         self._end = time() + self._remaining
 

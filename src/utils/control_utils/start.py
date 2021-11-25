@@ -7,6 +7,7 @@ import aiohttp
 from nextcord.ext.commands.context import Context
 from nextcord.message import Message
 
+from src.utils import player
 from src.utils.logger import app_logger
 from src.enums import Link, AudioPath
 from src import config, timer_manager
@@ -35,7 +36,6 @@ async def start(ctx: Context, payload: str):
         asyncio.create_task(_play_start_audio(ctx))
         timer_manager.insert(ctx.channel.id, Timer(interval_settings.get('pomodoro'), msg))
 
-        # # queue_status_update()
         # queue_transition_request()
 
     except (aiohttp.ClientResponseError, KeyError) as e:
@@ -55,5 +55,5 @@ async def _send_start_msg(ctx: Context, json_obj) -> Message:
 
 async def _play_start_audio(ctx: Context):
     vc = await ctx.author.voice.channel.connect()
-    # player.play(vc, AudioPath.POMO_START, 5.0)
+    player.play(vc, AudioPath.POMO_START, 5.0)
     await ctx.send('Playing audio!')

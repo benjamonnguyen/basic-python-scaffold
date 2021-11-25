@@ -2,11 +2,9 @@ import logging
 import signal
 import sys
 
-import uvloop
-
 import config
 from utils.logger import app_logger
-from controller.control import aiohttp_session
+from src.utils.control_utils.start import aiohttp_session
 import bot
 
 
@@ -16,22 +14,16 @@ def main():
 
 
 def setup():
-    uvloop.install()
-
     logging.basicConfig()
     app_logger.setLevel(config.logging_level())
 
-    register_signals()
 
-
-def register_signals():
-    signal.signal(signal.SIGINT, handle_interrupt)
-    signal.signal(signal.SIGTERM, handle_interrupt)
-
-
-# TODO handle SIGTERM
+# TODO handle SIGTERM refer to PomomoBeta
 def handle_interrupt(signum, frame):
+    # on_ready():
+    #     restart_premium_sessions()
     print('Handling interrupt!', signum, frame)
+    # Notify active session channels and persist premium sessions
     aiohttp_session.close()
     sys.exit(0)
 
