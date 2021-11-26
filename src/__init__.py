@@ -1,1 +1,1 @@
-from bot import start
+from config import configs

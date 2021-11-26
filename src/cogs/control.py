@@ -1,9 +1,9 @@
 import asyncio
+import logging
 
 from nextcord.ext import commands
 
-from src import config
-from src.utils.serializer import serialize
+from src.config import configs
 from src.utils.validator import validate_interval_settings
 from src.utils import control_utils
 
@@ -11,6 +11,8 @@ from src.utils import control_utils
 class Control(commands.Cog):
     def __init__(self, client):
         self.client = client
+        self.logger = logging.getLogger(__name__)
+        self.logger.setLevel(configs['APP']['LOGGING_LEVEL'])
 
     @commands.command()
     async def start(self,
@@ -19,30 +21,26 @@ class Control(commands.Cog):
                     short_break: int = None,
                     long_break: int = None,
                     intervals: int = None):
+        self.logger.debug(f'Received start command from server: {ctx.guild.name}')
         if ctx.author.voice is None or ctx.author.voice.channel is None:
             asyncio.create_task(ctx.send('Please join a voice channel and try again!'))
             return
 
-        asyncio.create_task(ctx.send('Starting session...'))
-        intervals_settings = {
+        interval_settings = {
             'pomodoro': pomodoro,
             'short_break': short_break,
             'long_break': long_break,
             'intervals': intervals
         }
-        validate_interval_settings(intervals_settings)
-        payload = serialize({
-            'channel_id': ctx.channel.id,
-            'voice_channel_id': ctx.author.voice.channel.id,
-            'interval_settings': intervals_settings
-        })
+        validate_interval_settings(interval_settings)
 
-        asyncio.create_task(control_utils.start(ctx, payload))
+        asyncio.create_task(control_utils.start(ctx, interval_settings))
 
     @start.error
     async def handle_error(self, ctx: commands.Context, e: commands.CommandError):
         if isinstance(e, ValueError):
-            asyncio.create_task(ctx.send(f'Use numbers between 0 and {config.max_interval_settings_value()}.'))
+            asyncio.create_task(ctx.send("Use numbers between 0 and "
+                                         f"{configs['PARAMETER']['MAX_INTERVAL_SETTINGS_VALUE']}."))
 
 
 def setup(client):

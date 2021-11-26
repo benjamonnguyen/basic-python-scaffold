@@ -1,21 +1,19 @@
 import logging
-import signal
 import sys
 
-import config
-from utils.logger import app_logger
-from src.utils.control_utils.start import aiohttp_session
-import bot
+from config import configs
+from src import bot
+from src.managers import rest_client_session_manager
 
 
 def main():
     setup()
-    bot.start()
+    bot_instance = bot.build()
+    bot_instance.run(configs['BOT']['TOKEN'])
 
 
 def setup():
     logging.basicConfig()
-    app_logger.setLevel(config.logging_level())
 
 
 # TODO handle SIGTERM refer to PomomoBeta
@@ -24,7 +22,7 @@ def handle_interrupt(signum, frame):
     #     restart_premium_sessions()
     print('Handling interrupt!', signum, frame)
     # Notify active session channels and persist premium sessions
-    aiohttp_session.close()
+    rest_client_session_manager.close_all()
     sys.exit(0)
 
 
